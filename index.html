@@ -13,40 +13,33 @@
   <!-- Task Form -->
   <section id="task-form-section">
     <form id="task-form">
-      <input type="text" id="task-input" name="task" placeholder="Add a new task..." required>
-      <input type="date" id="due-date" name="due-date">
+      <input type="text" id="task-input" placeholder="Add a new task..." required>
+      <input type="date" id="due-date">
       <label for="priority">Task Priority</label>
-<select id="priority" name="priority">
-  <option value="low">🟢 Low – Not urgent</option>
-  <option value="medium" selected>🟡 Medium – Normal priority</option>
-  <option value="high">🔴 High – Urgent or important</option>
-</select>
-<small class="priority-info">
-  Select how important or urgent the task is. This helps you sort and filter tasks later.
-</small>
-
+      <select id="priority">
+        <option value="low">🟢 Low</option>
+        <option value="medium" selected>🟡 Medium</option>
+        <option value="high">🔴 High</option>
+      </select>
       <button type="submit">Add Task</button>
     </form>
   </section>
 
   <!-- Filters -->
-<section id="filters">
-  <label for="priority-filter">Filter by Priority:</label>
-  <select id="priority-filter">
-    <option value="all">🔍 Show All</option>
-    <option value="high">🔴 High – Urgent or important</option>
-    <option value="medium">🟡 Medium – Normal priority</option>
-    <option value="low">🟢 Low – Not urgent</option>
-  </select>
-</section>
-
+  <section id="filters">
+    <label for="priority-filter">Filter by Priority:</label>
+    <select id="priority-filter">
+      <option value="all">🔍 Show All</option>
+      <option value="high">🔴 High</option>
+      <option value="medium">🟡 Medium</option>
+      <option value="low">🟢 Low</option>
+    </select>
+  </section>
 
   <!-- Task List -->
   <section id="task-list-section">
     <h2>📋 Your Tasks</h2>
-    <ul id="task-list">
-      <!-- Tasks will appear here -->
-    </ul>
+    <ul id="task-list"></ul>
   </section>
 
   <footer>
