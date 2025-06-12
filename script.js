@@ -3,12 +3,10 @@ const taskInput = document.getElementById('task-input');
 const dueDateInput = document.getElementById('due-date');
 const priorityInput = document.getElementById('priority');
 const taskList = document.getElementById('task-list');
-const filterPriority = document.getElementById('filter-priority');
-const filterStatus = document.getElementById('filter-status');
+const filterPriority = document.getElementById('priority-filter');
 
 let tasks = [];
 
-// Task object structure
 function createTask(title, dueDate, priority) {
   return {
     id: Date.now(),
@@ -19,20 +17,13 @@ function createTask(title, dueDate, priority) {
   };
 }
 
-// Render tasks to UI
 function renderTasks() {
   taskList.innerHTML = '';
+  const selectedPriority = filterPriority.value;
 
-  const priorityFilter = filterPriority.value;
-  const statusFilter = filterStatus.value;
-
-  const filteredTasks = tasks.filter(task => {
-    const matchPriority = priorityFilter === 'all' || task.priority === priorityFilter;
-    const matchStatus = statusFilter === 'all' ||
-      (statusFilter === 'completed' && task.completed) ||
-      (statusFilter === 'pending' && !task.completed);
-    return matchPriority && matchStatus;
-  });
+  const filteredTasks = tasks.filter(task =>
+    selectedPriority === 'all' || task.priority === selectedPriority
+  );
 
   if (filteredTasks.length === 0) {
     taskList.innerHTML = '<li>No tasks found.</li>';
@@ -41,6 +32,7 @@ function renderTasks() {
 
   filteredTasks.forEach(task => {
     const li = document.createElement('li');
+    li.className = 'task-item';
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -50,17 +42,17 @@ function renderTasks() {
       renderTasks();
     });
 
-    const titleSpan = document.createElement('span');
-    titleSpan.className = 'task-title';
-    titleSpan.textContent = task.title;
+    const title = document.createElement('span');
+    title.className = 'task-title';
+    title.textContent = task.title;
     if (task.completed) {
-      titleSpan.style.textDecoration = 'line-through';
-      titleSpan.style.color = '#888';
+      title.style.textDecoration = 'line-through';
+      title.style.color = '#888';
     }
 
-    const metaSpan = document.createElement('span');
-    metaSpan.className = 'task-meta';
-    metaSpan.textContent = `Due: ${task.dueDate || 'N/A'} | Priority: ${task.priority}`;
+    const meta = document.createElement('span');
+    meta.className = 'task-meta';
+    meta.textContent = `Due: ${task.dueDate || 'N/A'} | Priority: ${task.priority}`;
 
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-task';
@@ -71,32 +63,29 @@ function renderTasks() {
     });
 
     li.appendChild(checkbox);
-    li.appendChild(titleSpan);
-    li.appendChild(metaSpan);
+    li.appendChild(title);
+    li.appendChild(meta);
     li.appendChild(deleteBtn);
 
     taskList.appendChild(li);
   });
 }
 
-// Handle form submit
-taskForm.addEventListener('submit', function (e) {
+taskForm.addEventListener('submit', e => {
   e.preventDefault();
+
   const title = taskInput.value.trim();
   const dueDate = dueDateInput.value;
   const priority = priorityInput.value;
 
-  if (title) {
-    const newTask = createTask(title, dueDate, priority);
-    tasks.push(newTask);
-    renderTasks();
-    taskForm.reset();
-  }
+  if (!title) return;
+
+  const newTask = createTask(title, dueDate, priority);
+  tasks.push(newTask);
+  renderTasks();
+  taskForm.reset();
 });
 
-// Filters
 filterPriority.addEventListener('change', renderTasks);
-filterStatus.addEventListener('change', renderTasks);
 
-// Initial render
 renderTasks();
